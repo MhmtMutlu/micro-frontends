@@ -1,77 +1,77 @@
-Techniques, strategies and recipes for building a __modern web app__ with __multiple teams__ that can __ship features independently__.
+Birden fazla ekiple, özellikleri bağımsız olarak yayınlayabilen __modern bir web uygulaması__ oluşturmak için teknikler, stratejiler ve yöntemler.
 
-## What are Micro Frontends?
+## Mikro Frontend'ler nedir?
 
-The term __Micro Frontends__ first came up in [ThoughtWorks Technology Radar](https://www.thoughtworks.com/radar/techniques/micro-frontends) at the end of 2016. It extends the concepts of micro services to the frontend world. The current trend is to build a feature-rich and powerful browser application, aka single page app, which sits on top of a micro service architecture. Over time the frontend layer, often developed by a separate team, grows and gets more difficult to maintain. That's what we call a [Frontend Monolith](https://www.youtube.com/watch?v=pU1gXA0rfwc).
+__Mikro Frontend__ terimi ilk olarak 2016'nın sonunda [ThoughtWorks Technology Radar](https://www.thoughtworks.com/radar/techniques/micro-frontends)'da ortaya çıktı. Mikro frontend, mikro servis kavramlarını frontend dünyasına taşır. Güncel eğilim, mikro servis mimarisinin üzerinde çalışan, zengin özellikli ve güçlü bir tarayıcı uygulaması (single page application - tek sayfa uygulaması) inşa etmektir. Zamanla, çoğunlukla ayrı bir ekip tarafından geliştirilen frontend katmanı büyür ve bakım maliyeti artar. Buna [Frontend Monolit](https://www.youtube.com/watch?v=pU1gXA0rfwc) diyoruz.
 
-The idea behind Micro Frontends is to think about a website or web app as __a composition of features__ which are owned by __independent teams__. Each team has a __distinct area of business__ or __mission__ it cares about and specialises in. A team is __cross functional__ and develops its features __end-to-end__, from database to user interface.
+Mikro Frontend'lerin arkasındaki fikir; bir web sitesi ya da web uygulamasını, __bağımsız ekiplerin__ sahip olduğu __özelliklerin bir bileşimi__ olarak düşünmektir. Her ekip, önemsediği ve uzmanlaştığı __belirli bir iş alanına__ ya da __misyona__ sahiptir. Ekipler __çapraz fonksiyoneldir__ (farklı rolleri barındıran ekip yapısı) ve veritabanından kullanıcı arayüzüne kadar özelliklerini __uçtan uca__ geliştirirler.
 
-However, this idea is not new. It has a lot in common with the [Self-contained Systems](http://scs-architecture.org/) concept. In the past approaches like this went by the name of [Frontend Integration for Verticalised Systems](https://www.otto.de/jobs/en/technology/techblog/blogpost/architecture-principles-2013-04-15.php). But Micro Frontends is clearly a more friendly and less bulky term.
+Ancak bu fikir yeni değil. [Self-contained Systems](http://scs-architecture.org/) kavramıyla pek çok ortak noktası vardır. Geçmişte buna benzer yaklaşımlar [Frontend Integration for Verticalised Systems](https://www.otto.de/jobs/en/technology/techblog/blogpost/architecture-principles-2013-04-15.php) adıyla anılıyordu. Ancak Mikro Frontend'ler daha anlaşılır ve daha az hantal bir terimdir.
 
-__Monolithic Frontends__
+__Monolitik Frontend'ler__
 <img alt="Monolithic Frontends" src="./ressources/diagrams/organisational/monolith-frontback-microservices.png" loading="lazy" />
 
 
-__Organisation in Verticals__
+__Dikey Organizasyon__
 <img alt="End-To-End Teams with Micro Frontends" src="./ressources/diagrams/organisational/verticals-headline.png" loading="lazy" />
 
-## What's a Modern Web App?
+## Modern bir Web Uygulaması nedir?
 
-In the introduction I've used the phrase "building a modern web app". Let's define the assumptions that are connected with this term.
+Girişte "modern bir web uygulaması inşa etmek" ifadesini kullandım. Bu terimle bağlantılı varsayımları netleştirelim.
 
-To put this into a broader perspective, [Aral Balkan](https://ar.al/) has written a blog post about what he calls the [Documents‐to‐Applications Continuum](https://ar.al/notes/the-documents-to-applications-continuum/). He comes up with the concept of a sliding scale where a site, built out of __static documents__, connected via links, is __on the left__ end and a pure behaviour driven, __contentless application__ like an online photo editor is __on the right__.
+Daha geniş bir çerçeve çizmek için, [Aral Balkan](https://ar.al/)'ın [Documents‐to‐Applications Continuum](https://ar.al/notes/the-documents-to-applications-continuum/) adını verdiği kavram hakkındaki blog yazısı incelenebilir. Bağlantılarla birbirine bağlı __statik belgelerden__ oluşan bir sitenin __sol tarafta__, davranış odaklı ve neredeyse __içeriksiz uygulamaların__ (ör. çevrimiçi bir fotoğraf düzenleyici) ise __sağ tarafta__ yer aldığı bir kavram ortaya atıyor.
 
-If you would position your project on the __left side of this spectrum__, an __integration on webserver level__ is a good fit. With this model a server collects and __concatenates HTML strings__ from all components that make up the page requested by the user. Updates are done by reloading the page from the server or replacing parts of it via ajax. [Gustaf Nilsson Kotte](https://twitter.com/gustaf_nk/) has written a [comprehensive article](https://gustafnk.github.io/microservice-websites/) on this topic.
+Projenizi bu spektrumun __sol tarafına__ konumlandırırsanız, __web sunucusu seviyesinde entegrasyon__ uygun bir yaklaşımdır. Bu modelde sunucu, kullanıcının talep ettiği sayfayı oluşturan tüm bileşenlerden gelen __HTML dizelerini toplar ve birleştirir__. Güncellemeler, sayfanın sunucudan yeniden yüklenmesiyle veya parçalarının ajax ile değiştirilmesiyle yapılır. Bu konuda [Gustaf Nilsson Kotte](https://twitter.com/gustaf_nk/) tarafından yazılmış [kapsamlı bir makale](https://gustafnk.github.io/microservice-websites/) vardır.
 
-When your user interface has to provide __instant feedback__, even on unreliable connections, a pure server rendered site is not sufficient anymore. To implement techniques like [Optimistic UI](https://www.smashingmagazine.com/2016/11/true-lies-of-optimistic-user-interfaces/) or [Skeleton Screens](http://www.lukew.com/ff/entry.asp?1797) you need to be able to also __update__ your UI __on the device itself__. Google's term [Progressive Web Apps](https://developers.google.com/web/progressive-web-apps/) aptly describes the __balancing act__ of being a good citizen of the web (progressive enhancement) while also providing app-like performance. This kind of application is located somewhere __around the middle of the site-app-continuum__. Here a solely server based solution is not sufficient anymore. We have to move the __integration into the browser__, and this is the focus of this article.
+Kullanıcı arayüzünüzün, güvenilmez bağlantılarda bile __anlık geri bildirim__ sağlaması gerektiğinde, yalnızca sunucuda render edilen bir site artık yeterli değildir. [Optimistic UI](https://www.smashingmagazine.com/2016/11/true-lies-of-optimistic-user-interfaces/) veya [Skeleton Screens](http://www.lukew.com/ff/entry.asp?1797) gibi teknikleri uygulamak için, arayüzünüzü __cihaz üzerinde__ de __güncelleyebilmeniz__ gerekir. Google'ın [Progressive Web Apps](https://developers.google.com/web/progressive-web-apps/) terimi, web'in iyi bir vatandaşı olmayı (kademeli iyileştirme) uygulama benzeri performansla dengeleyen bu __denge oyununu__ yerinde tanımlar. Bu tür uygulamalar, __site-uygulama sürekliliğinin (site-app-continuum) ortalarında bir yerde yer alır__. Burada yalnızca sunucu tabanlı bir çözüm yeterli değildir. __Entegrasyonu tarayıcıya__ taşımamız gerekir ve bu makalenin odak noktası da budur.
 
-## Core Ideas behind Micro Frontends
+## Mikro Frontend'lerin Arkasındaki Temel Fikirler
 
-* __Be Technology Agnostic__<br>Each team should be able to choose and upgrade their stack without having to coordinate with other teams. [Custom Elements](#the-dom-is-the-api) are a great way to hide implementation details while providing a neutral interface to others.
-* __Isolate Team Code__<br>Don’t share a runtime, even if all teams use the same framework. Build independent apps that are self contained. Don't rely on shared state or global variables.
-* __Establish Team Prefixes__<br>Agree on naming conventions where isolation is not possible yet. Namespace CSS, Events, Local Storage and Cookies to avoid collisions and clarify ownership.
-* __Favor Native Browser Features over Custom APIs__<br>Use [Browser Events for communication](#parent-child-communication--dom-modification) instead of building a global PubSub system. If you really have to build a cross-team API, try keeping it as simple as possible.
-* __Build a Resilient Site__<br>Your feature should be useful, even if JavaScript failed or hasn't executed yet. Use [Universal Rendering](#server-side-rendering--universal-rendering) and Progressive Enhancement to improve perceived performance.
+* __Teknoloji Bakımından Bağımsız Olun__<br>Her ekip, diğer ekiplerle koordine olmak zorunda kalmadan kendi teknolojik yığınını seçebilmeli ve güncelleyebilmelidir. [Custom Elements](#the-dom-is-the-api), diğerlerine tarafsız bir arayüz sunarken uygulama detaylarını gizlemek için harika bir yöntemdir.
+* __Ekip Kodunu İzole Edin__<br>Tüm ekipler aynı framework'ü kullansa bile aynı çalışma zamanını paylaşmayın. Kendi içinde yeterli, bağımsız uygulamalar inşa edin. Paylaşılan duruma veya global değişkenlere güvenmeyin.
+* __Ekip Önekleri Belirleyin__<br>İzolasyonun henüz mümkün olmadığı yerlerde isimlendirme kuralları üzerinde anlaşın. Çakışmaları önlemek ve sahipliği netleştirmek için CSS, Event'ler, Local Storage ve Cookie'ler için isim alanları kullanın.
+* __Özel API'ler Yerine Yerel Tarayıcı Özelliklerini Tercih Edin__<br>Küresel bir PubSub sistemi kurmak yerine [iletişim için Tarayıcı Event'lerini](#parent-child-communication--dom-modification) kullanın. Ekipler arası bir API kurmanız gerçekten gerekiyorsa, mümkün olduğunca basit tutmaya çalışın.
+* __Dayanıklı Bir Site İnşa Edin__<br>JavaScript başarısız olsa ya da henüz çalışmamış olsa bile özelliğiniz faydalı olmalı. Algılanan performansı artırmak için [Evrensel Render](#server-side-rendering--universal-rendering) ve Kademeli İyileştirme'yi kullanın.
 
 ---
 
-## The DOM is the API
+## DOM, API'dir
 
-[Custom Elements](https://developers.google.com/web/fundamentals/getting-started/primers/customelements), the interoperability aspect from the Web Components Spec, are a good primitive for integration in the browser. Each team builds their component __using their web technology of choice__ and __wraps it inside a Custom Element__ (e.g. `<order-minicart></order-minicart>`). The DOM specification of this particular element (tag-name, attributes & events) acts as the contract or public API for other teams. The advantage is that they can use the component and its functionality without having to know the implementation. They just have to be able to interact with the DOM.
+[Custom Elements](https://developers.google.com/web/fundamentals/getting-started/primers/customelements), Web Components standardındaki tarayıcıların birlikte çalışmasını sağlayan kısımdır ve tarayıcı içinde entegrasyon yapmak için iyi bir temel sağlar. Her ekip, __seçtiği web teknolojisini kullanarak__ bileşenini oluşturur ve onu __bir Custom Element içine sarar__ (ör. `<order-minicart></order-minicart>`). Bu özel elementin DOM spesifikasyonu (etiket adı, attributelar ve event'ler) diğer ekipler için bir sözleşme ya da genel API görevi görür. Avantajı, diğer ekiplerin uygulama ayrıntılarını bilmeden bileşeni ve işlevlerini kullanabilmesidir. Yalnızca DOM ile etkileşime girebilmeleri yeterlidir.
 
-But Custom Elements alone are not the solution to all our needs. To address progressive enhancement, universal rendering or routing we need additional pieces of software.
+Ancak sadece Custom Elements kullanmak, tüm ihtiyaçlarımızı karşılamaz. Sayfanın kademeli olarak yüklenmesi (progressive enhancement), sunucu tarafında da çalışması (universal rendering) veya sayfa yönlendirmeleri (routing) gibi şeyler için ek yazılımlara ihtiyacımız vardır.
 
-This page is divided into two main areas. First we will discuss [Page Composition](#page-composition) - how to assemble a page out of components owned by different teams. After that we'll show examples for implementing client-side [Page Transition](#navigating-between-pages).
+Bu sayfa iki ana bölüme ayrılmıştır. Önce [Sayfa Bileşimi](#page-composition) — farklı ekiplerin sahip olduğu bileşenlerden bir sayfanın nasıl oluşturulacağını — tartışacağız. Ardından istemci tarafında [Sayfa Geçişleri](#navigating-between-pages) uygulamasına dair örnekler göstereceğiz.
 
-## Page Composition
+## Sayfa Bileşimi
 
-Beside the __client-__ and __server-side__ integration of code written in __different frameworks__ itself, there are a lot of side topics that should be discussed: mechanisms to __isolate js__, __avoid css conflicts__, __load resources__ as needed, __share common resources__ between teams, handle __data fetching__ and think about good __loading states__ for the user. We'll go into these topics one step at a time.
+__Farklı framework'lerle__ yazılmış kodun __istemci__ ve __sunucu__ tarafında entegrasyonunun yanı sıra, ele alınması gereken birçok yan konu vardır: js'i __izole etme__ mekanizmaları, __css çakışmalarını önleme__, gerektikçe __kaynak yükleme__, ekipler arasında __ortak kaynakları paylaşma__, __veri alma__ süreçlerini yönetme ve kullanıcı için iyi __yükleme durumları__ tasarlama. Bu konuları adım adım ele alacağız.
 
-### The Base Prototype
+### Temel Prototip
 
-The product page of this model tractor store will serve as the basis for the following examples.
+Bu model traktör mağazasının ürün sayfası, aşağıdaki örnekler için temel alınacaktır.
 
-It features a __variant selector__ to switch between the three different tractor models. On change product image, name, price and recommendations are updated. There is also a __buy button__, which adds the selected variant to the basket and a __mini basket__ at the top that updates accordingly.
+Sayfada, üç farklı traktör modeli arasında geçiş yapmamızı sağlayan bir __model seçici (variant selector)__ bulunur. Model değiştirildiğinde, ürün resmi, adı, fiyatı ve önerilen ürünler buna göre güncellenir. Ayrıca bir __“Satın Al (Buy)” butonu__ vardır. Bu butona basıldığında seçilen model sepete eklenir. Sayfanın üst kısmındaki __mini sepet (mini basket)__ de buna göre güncellenir.
 
-[![Example 0 - Product Page - Plain JS](./ressources/video/model-store-0.gif)](./0-model-store/)
+[![Örnek 0 - Ürün Sayfası - Sade JS](./ressources/video/model-store-0.gif)](./0-model-store/)
 
-[try in browser](./0-model-store/) & [inspect the code](https://github.com/neuland/micro-frontends/tree/master/0-model-store)
+[tarayıcıda dene](./0-model-store/) & [kodu incele](https://github.com/neuland/micro-frontends/tree/master/0-model-store)
 
-All HTML is generated client side using __plain JavaScript__ and ES6 Template Strings with __no dependencies__. The code uses a simple state/markup separation and re-renders the entire HTML client side on every change - no fancy DOM diffing and __no universal rendering__ for now. Also __no team separation__ - [the code](https://github.com/neuland/micro-frontends/tree/master/0-model-store) is written in one js/css file.
+Tüm HTML, __yalnızca JavaScript kullanılarak (yani ek bir kütüphane olmadan)__ istemci tarafında oluşturuluyor. Kodda ES6’nın Template String yapısı kullanılmış ve __hiçbir bağımlılık (no dependencies)__ eklenmemiştir. Uygulama, durum (state) ve HTML yapısı (markup) arasında basit bir ayrım yapar. Herhangi bir değişiklik olduğunda, sayfadaki tüm HTML yeniden oluşturulur. Yani şu anda gelişmiş bir DOM fark hesaplama (DOM diffing) veya __sunucu tarafı render (universal rendering)__ kullanılmıyor. Ayrıca bu örnekte ekip ayrımı da yok [tüm kod](https://github.com/neuland/micro-frontends/tree/master/0-model-store) tek bir js ve css dosyasında yazılmış.
 
-### Client-side Integration
+### İstemci Tarafı Entegrasyon
 
-In this example, the page is split into separate components/fragments owned by three teams. __Team Checkout__ (blue) is now responsible for everything regarding the purchasing process - namely the __buy button__ and __mini basket__. __Team Inspire__ (green) manages the __product recommendations__ on this page. The page itself is owned by __Team Product__ (red).
+Bu örnekte sayfa, üç ekibin sahip olduğu ayrı bileşenlere/parçalara ayrılır. __Team Checkout__ (mavi), satın alma süreciyle ilgili her şeyden — yani __satın alma butonu__ ve __mini sepetten__ — sorumludur. __Team Inspire__ (yeşil) bu sayfadaki __ürün önerilerini__ yönetir. Sayfanın kendisi ise __Team Product__'a (kırmızı) aittir.
 
-[![Example 1 - Product Page - Composition](./ressources/screen/three-teams.png)](./1-composition-client-only/)
+[![Örnek 1 - Ürün Sayfası - Bileşim](./ressources/screen/three-teams.png)](./1-composition-client-only/)
 
-[try in browser](./1-composition-client-only/) & [inspect the code](https://github.com/neuland/micro-frontends/tree/master/1-composition-client-only)
+[tarayıcıda dene](./1-composition-client-only/) & [kodu incele](https://github.com/neuland/micro-frontends/tree/master/1-composition-client-only)
 
-__Team Product__ decides which functionality is included and where it is positioned in the layout. The page contains information that can be provided by Team Product itself, like the product name, image and the available variants. But it also includes fragments (Custom Elements) from the other teams.
+__Team Product__, hangi işlevlerin dahil edileceğine ve yerleşimde nereye konumlanacağına karar verir. Sayfa, ürün adı, görseli ve mevcut varyantlar gibi Team Product tarafından sağlanabilecek bilgileri içerir. Ancak diğer ekiplerden gelen parçaları (Custom Element'ler) da içerir.
 
-### How to Create a Custom Element?
+### Bir Custom Element Nasıl Oluşturulur?
 
-Lets take the __buy button__ as an example. Team Product includes the button simply adding `<blue-buy sku="t_porsche"></blue-buy>` to the desired position in the markup. For this to work, Team Checkout has to register the element `blue-buy` on the page.
+__Satın Al (Buy) butonunu__ bir örnek olarak ele alalım. Team Product, bu butonu sayfada istediği yere eklemek için sadece şunu yazar: `<blue-buy sku="t_porsche"></blue-buy>`. Ancak bu butonun gerçekten çalışabilmesi için, Team Checkout sayfada `blue-buy` adlı bu elementi kaydetmek (register etmek) zorundadır.
 
     class BlueBuy extends HTMLElement {
       connectedCallback() {
@@ -83,31 +83,31 @@ Lets take the __buy button__ as an example. Team Product includes the button sim
     }
     window.customElements.define('blue-buy', BlueBuy);
 
-Now every time the browser comes across a new `blue-buy` tag, the `connectedCallback` is called. `this` is the reference to the root DOM node of the custom element. All properties and methods of a standard DOM element like `innerHTML` or `getAttribute()` can be used.
+Artık tarayıcı her yeni `blue-buy` etiketiyle karşılaştığında `connectedCallback` çağrılır. `this`, custom elementin kök DOM düğümüne referanstır. `innerHTML` veya `getAttribute()` gibi standart bir DOM elementinin tüm özellik ve metotları kullanılabilir.
 
 <img alt="Custom Element in Action" src="./ressources/video/custom-element.gif" loading="lazy" />
 
-When naming your element the only requirement the spec defines is that the name must __include a dash (-)__ to maintain compatibility with upcoming new HTML tags. In the upcoming examples the naming convention `[team_color]-[feature]` is used. The team namespace guards against collisions and this way the ownership of a feature becomes obvious, simply by looking at the DOM.
+Bir custom element (özel HTML etiketi) oluştururken, standartlara (spesifikasyona) göre tek zorunlu kural, etiket adında mutlaka __bir tire (-)__ bulunmasıdır. Bunun nedeni, gelecekte eklenecek yeni HTML etiketleriyle çakışmayı önlemektir. Aşağıdaki örneklerde şu isimlendirme kuralı kullanılmıştır: `[team_color]-[feature]`. Bu kuralda team_color (örneğin “blue” veya “red”) ekibin adını veya kimliğini temsil eder, feature ise o ekibin geliştirdiği özelliği belirtir.
 
-### Parent-Child Communication / DOM Modification
+### Ebeveyn-Çocuk (Parent-Child) İletişimi / DOM Değişikliği
 
-When the user selects another tractor in the __variant selector__, the __buy button has to be updated__ accordingly. To achieve this Team Product can simply __remove__ the existing element from the DOM __and insert__ a new one.
+Kullanıcı __varyant seçicide__ başka bir traktör seçtiğinde, __satın alma butonunun__ buna göre __güncellenmesi__ gerekir. Bunu sağlamak için Team Product mevcut elementi DOM'dan __kaldırıp__ yerine __yenisini ekleyebilir__.
 
     container.innerHTML;
     // => <blue-buy sku="t_porsche">...</blue-buy>
     container.innerHTML = '<blue-buy sku="t_fendt"></blue-buy>';
 
-The `disconnectedCallback` of the old element gets invoked synchronously to provide the element with the chance to clean up things like event listeners. After that the `connectedCallback` of the newly created `t_fendt` element is called.
+Eski element (bileşen) sayfadan kaldırıldığında, onun `disconnectedCallback` fonksiyonu hemen (senkron olarak) çalıştırılır. Bu sayede element, olay dinleyicileri (event listener’lar) gibi şeyleri temizleme fırsatı bulur. Ardından, yeni oluşturulan `t_fendt` elementinin `connectedCallback` fonksiyonu çağrılır.
 
-Another more performant option is to just update the `sku` attribute on the existing element.
+Daha performanslı bir seçenek ise mevcut element üzerindeki `sku` attributunu güncellemektir.
 
     document.querySelector('blue-buy').setAttribute('sku', 't_fendt');
 
-If Team Product used a templating engine that features DOM diffing, like React, this would be done by the algorithm automatically.
+Team Product, React gibi DOM farklarını (DOM diffing) otomatik olarak yöneten bir şablon motoru (templating engine) kullansaydı, bu işlemler (yani eski elementin silinip yenisinin eklenmesi) otomatik olarak algoritma tarafından yapılırdı.
 
 <img alt="Custom Element Attribute Change" src="./ressources/video/custom-element-attribute.gif" loading="lazy" />
 
-To support this the Custom Element can implement the `attributeChangedCallback` and specify a list of `observedAttributes` for which this callback should be triggered.
+Bunu desteklemek için (yani elementin attribute’larındaki değişiklikleri fark edebilmek için), Custom Element içinde `attributeChangedCallback` fonksiyonu tanımlanabilir. Ayrıca hangi attribute’ların değiştiğinde bu fonksiyonun tetikleneceğini belirtmek için bir `observedAttributes` listesi oluşturulur.
 
     const prices = {
       t_porsche: '66,00 €',
@@ -137,30 +137,29 @@ To support this the Custom Element can implement the `attributeChangedCallback` 
     }
     window.customElements.define('blue-buy', BlueBuy);
 
-To avoid duplication a `render()` method is introduced which is called from `connectedCallback` and `attributeChangedCallback`. This method collects needed data and innerHTML's the new markup. When deciding to go with a more sophisticated templating engine or framework inside the Custom Element, this is the place where its initialisation code would go.
+Tekrardan kaçınmak için, bir render() metodu eklenmiştir. Bu metod hem `connectedCallback` içinde hem de `attributeChangedCallback` içinde çağrılır. `render()` metodu, gerekli verileri toplar ve `innerHTML` kullanarak yeni HTML içeriğini sayfaya yazar. Eğer ileride Custom Element içinde daha gelişmiş bir şablon motoru (templating engine) veya framework (örneğin React, Vue, Lit vb.) kullanılmasına karar verilirse, bu render() metodu — yani bu nokta — o araçların başlatma (initialization) kodunun yazılacağı yerdir.
 
-### Browser Support
+### Tarayıcı Desteği
 
-The above example uses the Custom Element Spec which is [supported by all modern browsers](http://caniuse.com/#feat=custom-elementsv1). No polyfills or hacks are needed.
-The same is true for [Shadow DOM](https://caniuse.com/shadowdomv1), which is used to encapsulate the Custom Element's markup and styles.
+Yukarıdaki örnek, Custom Element standardını (Custom Element Spec) kullanmaktadır. Bu standart, [tüm modern tarayıcılar tarafından desteklenmektedir](http://caniuse.com/#feat=custom-elementsv1). Bu yüzden ek bir polyfill (tarayıcı desteği olmayan özellikleri taklit eden ek kod) ya da hack kullanmaya gerek yoktur. Aynı şey Shadow DOM için de geçerlidir. [Shadow DOM](https://caniuse.com/shadowdomv1), bir Custom Element’in HTML yapısını ve stillerini (CSS) dış dünyadan izole etmek (kapsüllemek) için kullanılır.
 
-### Framework Compatibility
+### Framework Uyumluluğu
 
-Because Custom Elements are a web standard, all major JavaScript frameworks like React, Vue, Angular, Svelte or Preact support them.
-They allow you to embed a Custom Element in your application just like a native HTML tag, and they also provide ways to publish your framework-specific application as a Custom Element.
+Custom Element'ler bir web standardı olduğu için React, Vue, Angular, Svelte ve Preact gibi tüm başlıca JavaScript framework'leri tarafından desteklenir.
+Uygulamanıza bir Custom Element'i yerel bir HTML etiketi gibi gömmenize olanak tanırlar; ayrıca framework'e özgü uygulamanızı bir Custom Element olarak yayımlamanız için yollar sunarlar.
 
-### Avoid Framework Anarchy
+### Framework Anarşisinden Kaçının
 
-Using Custom Elements is a great way to achieve a high amount of decoupling between the fragments of the individual teams. This way, each team is free to pick the frontend framework of their choice. But just because you can does not mean that it's a wise idea to mix different technologies. Try to avoid [Micro Frontends Anarchy](https://www.thoughtworks.com/radar/techniques/micro-frontend-anarchy) and create a reasonable level of alignment between the various teams. This way, teams can share learning and best practices with each other. It will also make your life easier when you want to establish a central pattern library.
-That said, the capability of mixing technologies can be handy when you're working with a legacy application and want to migrate to a new tech stack.
+Custom Elements kullanmak, farklı ekiplerin geliştirdiği sayfa parçaları (fragmentler) arasında yüksek düzeyde bağımsızlık (decoupling) sağlamanın harika bir yoludur. Bu sayede her ekip, kendi istediği frontend framework’ünü (örneğin React, Vue, Angular vb.) seçip kullanabilir. Ancak şunu unutmamak gerekir: Bir şeyi yapabiliyor olman, onu yapmanın doğru olduğu anlamına gelmez. Farklı teknolojileri rastgele karıştırmak (“[Micro Frontends Anarchy](https://www.thoughtworks.com/radar/techniques/micro-frontend-anarchy)”) iyi bir fikir değildir.
+Bunun yerine, ekipler arasında belirli bir uyum (alignment) sağlamak gerekir. Böylece ekipler birbirleriyle öğrenimlerini ve en iyi uygulamalarını paylaşabilir. Ayrıca merkezi bir pattern kütüphanesi kurmak istediğinizde işiniz kolaylaşmış olur. Bununla birlikte, teknolojileri karıştırabilme yeteneği; eski bir uygulamayla çalışırken ve yeni bir teknoloji yığınına geçiş yapmak istediğinizde kullanışlı olabilir.
 
-### Child-Parent or Siblings Communication / DOM Events
+### Çocuk-Ebeveyn (Parent-Child) veya Kardeş (Sibling) İletişimi / DOM Olayları
 
-But passing down attributes is not sufficient for all interactions. In our example the __mini basket should refresh__ when the user performs a __click on the buy button__.
+Ancak attributeları aşağı doğru iletmek tüm etkileşimler için yeterli değildir. Bizim örneğimizde kullanıcı __satın alma butonuna tıkladığında__ __mini sepetin yenilenmesi__ gerekir.
 
-Both fragments are owned by Team Checkout (blue), so they could build some kind of internal JavaScript API that lets the mini basket know when the button was pressed. But this would require the component instances to know each other and would also be an isolation violation.
+Her iki parça da Team Checkout ekibine ait olduğu için, ekip bu parçalar arasında iletişim kurmak adına kendi içlerinde bir JavaScript API oluşturabilir. Bu API sayesinde, “mini basket” bileşeni, satın alma butonuna basıldığını öğrenebilir. Ancak bu yaklaşımın bir sakıncası var: Bileşenlerin birbirinin varlığını bilmesi gerekir (yani direkt olarak birbirlerine bağlı olurlar). Bu da bileşenler arasındaki bağımsızlığı (izolasyonu) bozarak, ayrık yapı ilkesine aykırı olur.
 
-A cleaner way is to use a PubSub mechanism, where a component can publish a message and other components can subscribe to specific topics. Luckily browsers have this feature built-in. This is exactly how browser events like `click`, `select` or `mouseover` work. In addition to native events there is also the possibility to create higher level events with `new CustomEvent(...)`. Events are always tied to the DOM node they were created/dispatched on. Most native events also feature bubbling. This makes it possible to listen for all events on a specific sub-tree of the DOM. If you want to listen to all events on the page, attach the event listener to the window element. Here is how the creation of the `blue:basket:changed`-event looks in the example:
+Daha temiz ve doğru bir yöntem, bileşenler arası iletişim için Pub/Sub (Publish–Subscribe) yapısını kullanmaktır. Bu yapıda: Bir bileşen bir mesaj yayınlar (publish), Diğer bileşenler ise istedikleri mesajlara abone (subscribe) olabilir. Neyse ki tarayıcılar bu özelliği zaten doğal olarak destekler. Çünkü tarayıcıdaki `click`, `select` veya `mouseover` gibi olaylar da aynı mantıkla çalışır. Bunlara ek olarak, sadece bu yerleşik (native) olayları kullanmak zorunda değiliz `new CustomEvent(...)` ile kendi özel olaylarımızı da tanımlayabiliriz. Olaylar (Events) her zaman hangi DOM elemanı üzerinde oluşturulduysa veya tetiklendiyse (dispatch edildiyse) ona bağlıdır. Birçok yerleşik olayda olduğu gibi, bu olaylar bubbling (yukarı doğru baloncuklanma) özelliğine de sahip olabilir. Bu sayede: Belirli bir DOM alanı içinde gerçekleşen tüm olaylar üst elemanlardan dinlenebilir. Sayfanın tamamındaki olayları dinlemek istiyorsan, dinleyiciyi window nesnesine bağlaman yeterlidir. Örnekte, blue:basket:changed isimli özel bir event oluşturma işlemi aşağıdaki gibi yapılmıştır:
 
     class BlueBuy extends HTMLElement {
       [...]
@@ -186,7 +185,7 @@ A cleaner way is to use a PubSub mechanism, where a component can publish a mess
       }
     }
 
-The mini basket can now subscribe to this event on `window` and get notified when it should refresh its data.
+Mini sepet artık bu olaya `window` üzerinde abone olabilir ve verilerini yenilemesi gerektiğinde bilgilendirilir.
 
     class BlueBasket extends HTMLElement {
       connectedCallback() {
@@ -201,37 +200,37 @@ The mini basket can now subscribe to this event on `window` and get notified whe
       }
     }
 
-With this approach the mini basket fragment adds a listener to a DOM element which is outside its scope (`window`). This should be ok for many applications, but if you are uncomfortable with this you could also implement an approach where the page itself (Team Product) listens to the event and notifies the mini basket by calling `refresh()` on the DOM element.
+Bu yaklaşımda mini sepet bileşeni (mini basket), kendi kapsamının dışındaki bir DOM elementine, yani (`window`)'a bir olay dinleyici (event listener) ekler. Bu çoğu uygulama için sorun değildir ve rahatlıkla kullanılabilir. Ancak eğer bu durum uygun değilse, şu şekildeki alternatif de kullanılabilir: Sayfanın kendisi (Team Product) bu olayı dinler. Olay gerçekleştiğinde, sayfa mini sepet bileşenini bulur ve onun üzerinde `refresh()` metodunu çağırarak güncelleme yapmasını sağlar. Bu şekilde mini sepet bileşeni doğrudan window ile iletişime geçmek zorunda kalmaz.
 
-    // page.js
-    const $ = document.getElementsByTagName;
+// page.js
+const $ = document.getElementsByTagName;
 
-    $('blue-buy')[0].addEventListener('blue:basket:changed', function() {
-      $('blue-basket')[0].refresh();
-    });
+$('blue-buy')[0].addEventListener('blue:basket:changed', function() {
+  $('blue-basket')[0].refresh();
+});
 
-Imperatively calling DOM methods is quite uncommon, but can be found in [video element api](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement#methods) for example. If possible the use of the declarative approach (attribute change) should be preferred.
+DOM metotlarını doğrudan (imperative şekilde) çağırmak çok sık kullanılan bir yöntem değildir. Ama örneğin [video element API](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement#methods)’sinde bu tarz kullanımlara rastlayabilirsiniz. Eğer mümkünse, bunun yerine deklaratif yaklaşım (yani attribute’ların değiştirilmesiyle işlem yapılması) tercih edilmelidir.
 
-## Server-side Rendering / Universal Rendering
+## Sunucu Tarafı Render / Evrensel Render
 
-Custom Elements are great for integrating components inside the browser. But when building a site that is accessible on the web, chances are that initial load performance matters and users will see a white screen until all js frameworks are downloaded and executed. Additionally, it's good to think about what happens to the site if the JavaScript fails or is blocked. [Jeremy Keith](https://adactio.com/) explains the importance in his ebook/podcast [Resilient Web Design](https://resilientwebdesign.com/). Therefore the ability to render the core content on the server is key. Sadly the web component spec does not talk about server rendering at all. No JavaScript, no Custom Elements :(
+Custom Elements, tarayıcı içinde bileşenleri entegre etmek için harika bir yöntemdir. Ancak internete açık bir web sitesi geliştiriyorsanız, ilk yükleme performansı çok önemlidir. Çünkü tüm JavaScript framework’leri indirilip çalıştırılana kadar kullanıcılar büyük ihtimalle beyaz bir ekran görecektir. Ayrıca, JavaScript’in hata vermesi veya tarayıcı tarafından engellenmesi durumunda sitenin ne yapacağı da düşünülmelidir. [Jeremy Keith](https://adactio.com/), [Resilient Web Design](https://resilientwebdesign.com/) adlı ebook/podcast’inde bu konunun önemini çok iyi açıklıyor. Bu yüzden, sitenin temel içeriklerinin sunucu tarafında render edilebilmesi çok kritik bir ihtiyaçtır. Ne yazık ki, Web Components standartlarında sunucu tarafında render ile ilgili hiçbir şey yok. JavaScript yoksa, Custom Elements da yok :(
 
 ### Custom Elements + Server Side Includes = ❤️
 
-To make server rendering work, the previous example is refactored. Each team has their own express server and the `render()` method of the Custom Element is also accessible via url.
+Sunucu tarafında render işlemini mümkün hale getirmek için, önceki örnek yeniden düzenlenmiştir. Artık her takımın kendi Express server’ı vardır ve Custom Element’in `render()` metodu da bir URL üzerinden erişilebilir hale getirilmiştir.
 
     $ curl http://127.0.0.1:3000/blue-buy?sku=t_porsche
     <button type="button">buy for 66,00 €</button>
 
-The Custom Element tag name is used as the path name - attributes become query parameters. Now there is a way to server-render the content of every component. In combination with the `<blue-buy>`-Custom Elements something that is quite close to a __Universal Web Component__ is achieved:
+Custom Element’in etiket adı, sunucudaki URL yolu (path) olarak kullanılır — atribütler (attributes) ise query parametrelerine dönüştürülür. Bu sayede, her bileşenin içeriğini sunucu tarafında render etmek mümkün hale gelir. Bunu `<blue-buy>` Custom Element’i ile birleştirdiğimizde, ortaya __evrensel (universal) bir Web Component__’e oldukça yakın bir yapı çıkmış olur:
 
     <blue-buy sku="t_porsche">
       <!--#include virtual="/blue-buy?sku=t_porsche" -->
     </blue-buy>
 
-The `#include` comment is part of [Server Side Includes](https://en.wikipedia.org/wiki/Server_Side_Includes), which is a feature that is available in most web servers. Yes, it's the same technique used back in the days to embed the current date on our web sites. There are also a few alternative techniques like [ESI](https://en.wikipedia.org/wiki/Edge_Side_Includes), [nodesi](https://github.com/Schibsted-Tech-Polska/nodesi), [compoxure](https://github.com/tes/compoxure) and [tailor](https://github.com/zalando/tailor), but for our projects SSI has proven itself as a simple and incredibly stable solution.
+`#include` yorum satırı, çoğu web sunucusunda bulunan bir özellik olan [Server Side Includes](https://en.wikipedia.org/wiki/Server_Side_Includes)'in bir parçasıdır. Evet, zamanında sitelerimize güncel tarihi gömmek için kullandığımız tekniğin aynısı. [ESI](https://en.wikipedia.org/wiki/Edge_Side_Includes), [nodesi](https://github.com/Schibsted-Tech-Polska/nodesi), [compoxure](https://github.com/tes/compoxure) ve [tailor](https://github.com/zalando/tailor) gibi alternatif teknikler de vardır; ancak projelerimizde SSI kendini basit ve son derece stabil bir çözüm olarak kanıtlamıştır.
 
-The `#include` comment is replaced with the response of `/blue-buy?sku=t_porsche` before the web server sends the complete page to the browser. The configuration in nginx looks like this:
+`#include` yorum satırı, tarayıcıya sayfanın tamamı gönderilmeden önce, `/blue-buy?sku=t_porsche` isteğinden gelen cevap ile değiştirilir. Yani sunucu, HTML’i kullanıcıya göndermeden önce bu kısmı dinamik olarak doldurur. Bu işlemin nginx üzerindeki yapılandırması (config) aşağıdaki gibi görünür:
 
     upstream team_blue {
       server team_blue:3001;
@@ -261,124 +260,97 @@ The `#include` comment is replaced with the response of `/blue-buy?sku=t_porsche
       }
     }
 
-The directive `ssi: on;` enables the SSI feature and an `upstream` and `location` block is added for every team to ensure that all urls which start with `/blue` will be routed to the correct application (`team_blue:3001`). In addition the `/` route is mapped to team red, which is controlling the homepage / product page.
+`ssi: on;` yönergesi SSI özelliğini etkinleştirir ve her ekip için birer `upstream` ve `location` bloğu eklenir; böylece `/blue` ile başlayan tüm url'ler doğru uygulamaya (`team_blue:3001`) yönlendirilir. Ayrıca ana sayfayı / ürün sayfasını kontrol eden kırmızı ekibe `/` rotası eşlenir.
 
-This animation shows the tractor store in a browser which has __JavaScript disabled__.
+Bu animasyon, __JavaScript'in devre dışı__ olduğu bir tarayıcıda traktör mağazasını gösterir.
 
 [![Server-side Rendering - Disabled JavaScript](./ressources/video/server-render.gif)](./ressources/video/server-render.mp4)
 
-[inspect the code](https://github.com/neuland/micro-frontends/tree/master/2-composition-universal)
+[kodu incele](https://github.com/neuland/micro-frontends/tree/master/2-composition-universal)
 
-The variant selection buttons now are actual links and every click leads to a reload of the page. The terminal on the right illustrates the process of how a request for a page is routed to team red, which controls the product page and after that the markup is supplemented by the fragments from team blue and green.
+Artık variant seçim butonları gerçek linkler haline gelmiş durumda ve her tıklama, sayfanın yeniden yüklenmesine neden oluyor. Sağdaki terminal, bir sayfa isteğinin nasıl Team Red’e yönlendirildiğini gösteriyor. Team Red, ürün sayfasını kontrol ediyor ve ardından sayfa işaretlemesi (markup) Team Blue ve Team Green’in parçalarıyla tamamlanıyor.
 
-When switching JavaScript back on, only the server log messages for the first request will be visible. All subsequent tractor changes are handled client side, just like in the first example. In a later example the product data will be extracted from the JavaScript and loaded via a REST api as needed.
+JavaScript’i tekrar açtığınızda, yalnızca ilk isteğe ait sunucu logları görünecektir. Tüm sonraki traktör değişiklikleri, tıpkı ilk örnekte olduğu gibi istemci tarafında (client-side) işlenir. Daha sonraki bir örnekte ise, ürün verileri JavaScript’ten alınacak ve gerektiğinde bir REST API aracılığıyla yüklenecektir.
 
-You can play with this sample code on your local machine. Only [Docker Compose](https://docs.docker.com/compose/install/) needs to be installed.
+Bu örnek kodu yerel makinenizde deneyebilirsiniz. Yalnızca [Docker Compose](https://docs.docker.com/compose/install/) kurulu olmalıdır.
 
     git clone https://github.com/neuland/micro-frontends.git
     cd micro-frontends/2-composition-universal
     docker-compose up --build
 
-Docker then starts the nginx on port 3000 and builds the node.js image for each team. When you open [http://127.0.0.1:3000/](http://127.0.0.1:3000/) in your browser you should see a red tractor. The combined log of `docker-compose` makes it easy to see what is going on in the network. Sadly there is no way to control the output color, so you have to endure the fact that team blue might be highlighted in green :)
+Docker daha sonra 3000 portunda nginx'i başlatır ve her ekip için node.js imajını oluşturur. Tarayıcınızda [http://127.0.0.1:3000/](http://127.0.0.1:3000/) adresini açtığınızda kırmızı bir traktör görmelisiniz. `docker-compose`'un birleştirilmiş günlüğü, ağda neler olduğunu görmeyi kolaylaştırır. Ne yazık ki çıktı rengini kontrol etmenin bir yolu yok; bu yüzden mavi ekibin yeşil renkle vurgulanmış olmasına katlanmanız gerekecek :)
 
-The `src` files are mapped into the individual containers and the node application will restart when you make a code change. Changing the `nginx.conf` requires a restart of `docker-compose` in order to have an effect. So feel free to fiddle around and give feedback.
+`src` dosyaları her bir container içine eşlenir ve kodda bir değişiklik yaptığınızda Node uygulaması otomatik olarak yeniden başlatılır. Ancak `nginx.conf` dosyasını değiştirmek istiyorsanız, değişikliğin geçerli olması için `docker-compose`’u yeniden başlatmanız gerekir. Yani, rahatça denemeler yapabilir ve geri bildirim verebilirsiniz.
 
-### Data Fetching & Loading States
+### Veri Alma & Yükleme Durumları
 
-A downside of the SSI/ESI approach is, that the __slowest fragment determines the response time__ of the whole page.
-So it's good when the response of a fragment can be cached.
-For fragments that are expensive to produce and hard to cache it's often a good idea to exclude them from the initial render.
-They can be loaded asynchronously in the browser.
-In our example the `green-recos` fragment, that shows personalized recommendations is a candidate for this.
+SSI/ESI yaklaşımının bir dezavantajı, __en yavaş parçanın (fragment) tüm sayfanın yanıt süresini belirlemesidir__. Bu yüzden, bir parçanın yanıtının önbelleğe alınabilmesi iyi olur. Üretmesi pahalı ve önbelleğe almak zor olan parçalar için, genellikle ilk render sırasında dahil edilmemeleri iyi bir fikirdir. Bu parçalar daha sonra tarayıcıda asenkron olarak yüklenebilir. Bizim örneğimizde, `green-recos` fragmenti (kişiselleştirilmiş önerileri gösteren kısım) bunun için uygun bir adaydır. 
 
-One possible solution would be that team red just skips the SSI Include.
+Bir çözüm olarak, Team Red sadece SSI Include’ı atlayabilir.
 
-**Before**
+**Önce**
 
     <green-recos sku="t_porsche">
       <!--#include virtual="/green-recos?sku=t_porsche" -->
     </green-recos>
 
-**After**
+**Sonra**
 
     <green-recos sku="t_porsche"></green-recos>
 
-*Important Side-note: Custom Elements [cannot be self-closing](https://developers.google.com/web/fundamentals/web-components/customelements), so writing `<green-recos sku="t_porsche" />` would not work correctly.*
+*Önemli not: Custom Element'ler [self-closing olamaz](https://developers.google.com/web/fundamentals/web-components/customelements); dolayısıyla `<green-recos sku="t_porsche" />` yazmak doğru çalışmayacaktır.*
 
 <img alt="Reflow" src="./ressources/video/data-fetching-reflow.gif" style="width: 500px" loading="lazy" />
 
-The rendering only takes place in the browser.
-But, as can be seen in the animation, this change has now introduced a __substantial reflow__ of the page.
-The recommendation area is initially blank.
-Team greens JavaScript is loaded and executed.
-The API call for fetching the personalized recommendation is made.
-The recommendation markup is rendered and the associated images are requested.
-The fragment now needs more space and pushes the layout of the page.
+Render işlemi sadece tarayıcıda gerçekleşir. Ancak animasyonda görüldüğü gibi, bu değişiklik sayfada __önemli bir yeniden akış (reflow)__ oluşturmuştur. Öneri alanı başlangıçta boşdur. Team Green’in JavaScript’i yüklenir ve çalıştırılır. Kişiselleştirilmiş önerileri almak için API çağrısı yapılır. Öneri işaretlemesi (markup) render edilir ve ilgili resimler istenir. Bu fragment artık daha fazla alan gerektirir ve sayfanın düzeni (layout) etkilenir.
 
-There are different options to avoid an annoying reflow like this.
-Team red, which controls the page, could __fixate the recommendation containers height__.
-On a responsive website its often tricky to determine the height, because it could differ for different screen sizes.
-But the more important issue is, that __this kind of inter-team agreement creates a tight coupling__ between team red and green.
-If team green wants to introduce an additional sub-headline in the reco element, it would have to coordinate with team red on the new height.
-Both teams would have to rollout their changes simultaneously to avoid a broken layout.
+Böyle can sıkıcı bir reflow’dan kaçınmak için farklı seçenekler vardır. Sayfayı kontrol eden Team Red, __öneri kutularının (recommendation containers) yüksekliğini sabitleyebilir__. Ancak responsive bir sitede yüksekliği belirlemek genellikle zordur, çünkü farklı ekran boyutlarında değişebilir. Daha önemli bir konu ise, __bu tür bir takımlar arası anlaşma, Team Red ve Team Green arasında sıkı bir bağımlılık (tight coupling) oluşturur__. Örneğin, Team Green reco element’ine ek bir alt başlık eklemek isterse, yeni yüksekliği belirlemek için Team Red ile koordinasyon yapması gerekir. Her iki takım da sayfa düzeninin bozulmaması için değişikliklerini eş zamanlı olarak uygulamak zorundadır.
 
-A better way is to use a technique called [Skeleton Screens](https://blog.prototypr.io/luke-wroblewski-introduced-skeleton-screens-in-2013-through-his-work-on-the-polar-app-later-fd1d32a6a8e7).
-Team red leaves the `green-recos` SSI Include in the markup.
-In addition team green changes the __server-side render method__ of its fragment so that it produces a __schematic version of the content__.
-The __skeleton markup__ can reuse parts of the real content's layout styles.
-This way it __reserves the needed space__ and the fill-in of the actual content does not lead to a jump.
+Bunun daha iyi bir yolu, [Skeleton Screens](https://blog.prototypr.io/luke-wroblewski-introduced-skeleton-screens-in-2013-through-his-work-on-the-polar-app-later-fd1d32a6a8e7) adı verilen tekniği kullanmaktır. Bu yöntemde: Team Red, `green-recos` için olan SSI Include satırını HTML içinde bırakır. Team Green ise kendi fragment’ının __sunucu tarafı render__ yöntemini değiştirir ve gerçek içerik yerine, __içeriğin şematik (iskelet) bir versiyonunu__ üretir. Bu __skeleton (iskelet) görünüm__, gerçek içeriğin bazı layout (yerleşim) stillerini kullanabilir. Böylece sayfada __ihtiyaç duyulan alan baştan ayrılır__ ve gerçek içerik geldiğinde sayfa düzeni zıplamaz veya kaymaz.
 
 <img alt="Skeleton Screen" src="./ressources/video/data-fetching-skeleton.gif" style="width: 500px" loading="lazy" />
 
-Skeleton screens are also __very useful for client rendering__.
-When your custom element is inserted into the DOM due to a user action it could __instantly render the skeleton__ until the data it needs from the server has arrived.
+Skeleton ekranlar (Skeleton Screens) sadece sunucu tarafı için değil, __istemci tarafı (client-side) render__ için de __çok kullanışlıdır__. Bir kullanıcı etkileşimi sonucunda Custom Element DOM’a eklendiğinde, sunucudan gerekli veriler gelene kadar __hemen skeleton (iskelet) görünümü__ gösterebilir. Böylece kullanıcı boş bir alan yerine, içeriğin yüklenmekte olduğunu anlayabileceği bir taslak görür.
 
-Even on an __attribute change__ like for the _variant select_ you can decide to switch to skeleton view until the new data arrives.
-This ways the user gets an indication that something is going on in the fragment.
-But when your endpoint responds quickly a short __skeleton flicker__ between the old and new data could also be annoying.
-Preserving the old data or using intelligent timeouts can help.
-So use this technique wisely and try to get user feedback.
+Varyant seçimi gibi bir __attribute değiştiğinde__ bile, yeni veri gelene kadar bileşeni skeleton görünüme geçirmeyi tercih edebilirsiniz. Bu sayede kullanıcı, o bölümde bir işlem olduğunu fark eder. Ancak dikkat edilmesi gereken bir nokta var: Eğer sunucudan gelen cevap çok hızlıysa, eski veri ile yeni veri arasında çok kısa bir __skeleton yanıp sönmesi (flicker)__ oluşabilir ve bu da kullanıcıyı rahatsız edebilir. Bu durumda: Eski veriyi korumak, Ya da akıllı zaman aşımı (timeout) kullanmak gibi yöntemler yardımcı olabilir. Yani bu tekniği dikkatli kullanın ve mümkünse kullanıcı geri bildirimi alın.
 
-## Need More Examples?
+## Daha Fazla Örneğe mi İhtiyacınız Var?
 
 
 <a href="/tractor-store/">
 <img alt="Tractor Store 2.0" src="./ressources/video/tractor-store-2.webp" style="width: 500px" loading="lazy" />
 </a>
 
-[Check out the Tractor Store 2.0](/tractor-store/)
+[Tractor Store 2.0'a göz atın](/tractor-store/)
 
-It's a more real-world micro frontends example that includes challenges like __routing & navigation__, __communication__, __handling state__, __loading strategies__, __sharing code__, __asset optimizations__ and __testing__.
-The site is a collection of different tech-specific implementations of the same application.
-Think of it as a [TodoMVC](http://todomvc.com/) for micro frontends.
+Bu, __yönlendirme ve gezinme__, __iletişim__, __durum yönetimi__, __yükleme stratejileri__, __kod paylaşımı__, __varlık optimizasyonları__ ve __test__ gibi zorlukları içeren daha gerçek-dünya bir micro frontends örneğidir. Bu site, aynı uygulamanın farklı teknolojilerle geliştirilmiş versiyonlarının bir arada bulunduğu bir örnek projedir. Bunu Micro Frontend’ler için yapılmış bir [TodoMVC](http://todomvc.com/) gibi düşünebilirsiniz.
 
-
-
-## Additional Resources
-- [Book: Micro Frontends in Action](https://www.manning.com/books/micro-frontends-in-action?a_aid=mfia&a_bid=5f09fdeb) Written by me.
-- [Talk: Micro Frontends - MicroCPH, Copenhagen 2019](https://www.youtube.com/watch?v=wCHYILvM7kU) ([Slides](https://noti.st/naltatis/zQb2m5/micro-frontends-the-nitty-gritty-details-or-frontend-backend-happyend)) The Nitty Gritty Details or Frontend, Backend, 🌈 Happyend
-- [Talk: Micro Frontends - Web Rebels, Oslo 2018](https://www.youtube.com/watch?v=dTW7eJsIHDg) ([Slides](https://noti.st/naltatis/HxcUfZ/micro-frontends-think-smaller-avoid-the-monolith-love-the-backend)) Think Smaller, Avoid the Monolith, ❤️the Backend
-- [Slides: Micro Frontends - JSUnconf.eu 2017](https://speakerdeck.com/naltatis/micro-frontends-building-a-modern-webapp-with-multiple-teams)
-- [Talk: Break Up With Your Frontend Monolith - JS Kongress 2017](https://www.youtube.com/watch?v=W3_8sxUurzA) Elisabeth Engel talks about implementing Micro Frontends at gutefrage.net
-- [Article: Micro Frontends](https://martinfowler.com/articles/micro-frontends.html) Article by Cam Jackson on Martin Fowlers Blog
-- [Post: Micro frontends - a microservice approach to front-end web development](https://medium.com/@tomsoderlund/micro-frontends-a-microservice-approach-to-front-end-web-development-f325ebdadc16) Tom Söderlund explains the core concept and provides links on this topic
-- [Post: Microservices to Micro-Frontends](http://www.agilechamps.com/microservices-to-micro-frontends/) Sandeep Jain summarizes the key principals behind microservices and micro frontends
-- [Link Collection: Micro Frontends by Elisabeth Engel](https://micro-frontends.zeef.com/elisabeth.engel?ref=elisabeth.engel&share=ee53d51a914b4951ae5c94ece97642fc) extensive list of posts, talks, tools and other resources on this topic
-- [Awesome Micro Frontends](https://github.com/ChristianUlbrich/awesome-microfrontends) a curated list of links by Christian Ulbrich 🕶
-- [Custom Elements Everywhere](https://custom-elements-everywhere.com/) Making sure frameworks and custom elements can be BFFs
-- Tractors are purchasable at [manufactum.com](https://www.manufactum.com/) :)<br>_This store is developed by two teams using the here described techniques._
+## Ek Kaynaklar
+- [Kitap: Micro Frontends in Action](https://www.manning.com/books/micro-frontends-in-action?a_aid=mfia&a_bid=5f09fdeb) Tarafımdan yazıldı.
+- [Konuşma: Micro Frontends - MicroCPH, Kopenhag 2019](https://www.youtube.com/watch?v=wCHYILvM7kU) ([Slaytlar](https://noti.st/naltatis/zQb2m5/micro-frontends-the-nitty-gritty-details-or-frontend-backend-happyend)) The Nitty Gritty Details or Frontend, Backend, 🌈 Happyend
+- [Konuşma: Micro Frontends - Web Rebels, Oslo 2018](https://www.youtube.com/watch?v=dTW7eJsIHDg) ([Slaytlar](https://noti.st/naltatis/HxcUfZ/micro-frontends-think-smaller-avoid-the-monolith-love-the-backend)) Think Smaller, Avoid the Monolith, ❤️the Backend
+- [Slaytlar: Micro Frontends - JSUnconf.eu 2017](https://speakerdeck.com/naltatis/micro-frontends-building-a-modern-webapp-with-multiple-teams)
+- [Konuşma: Break Up With Your Frontend Monolith - JS Kongress 2017](https://www.youtube.com/watch?v=W3_8sxUurzA) Elisabeth Engel, gutefrage.net'te Micro Frontends uygulamasını anlatıyor
+- [Makale: Micro Frontends](https://martinfowler.com/articles/micro-frontends.html) Cam Jackson'dan Martin Fowler'ın blogunda bir makale
+- [Yazı: Micro frontends - front-end web geliştirmeye mikro servis yaklaşımı](https://medium.com/@tomsoderlund/micro-frontends-a-microservice-approach-to-front-end-web-development-f325ebdadc16) Tom Söderlund temel konsepti açıklar ve bağlantılar sunar
+- [Yazı: Microservices to Micro-Frontends](http://www.agilechamps.com/microservices-to-micro-frontends/) Sandeep Jain mikro servisler ve micro frontendlerin temel ilkelerini özetler
+- [Bağlantı Koleksiyonu: Elisabeth Engel'den Micro Frontends](https://micro-frontends.zeef.com/elisabeth.engel?ref=elisabeth.engel&share=ee53d51a914b4951ae5c94ece97642fc) bu konuya dair geniş bir yazı, konuşma, araç ve kaynak listesi
+- [Awesome Micro Frontends](https://github.com/ChristianUlbrich/awesome-microfrontends) Christian Ulbrich tarafından derlenmiş bağlantılar listesi 🕶
+- [Custom Elements Everywhere](https://custom-elements-everywhere.com/) Framework'lerin ve custom elementlerin uyumlu olmasını sağlar
+- Traktörler [manufactum.com](https://www.manufactum.com/) üzerinden satın alınabilir :)<br>_Bu mağaza burada açıklanan teknikleri kullanan iki ekip tarafından geliştirilmiştir._
 
 
-## Contributors
-- [Koike Takayuki](https://github.com/koiketakayuki) who translated the site to [Japanese](https://micro-frontends-japanese.org/).
-- [Jorge Beltrán](https://github.com/scipion) who translated the site to [Spanish](https://micro-frontends-es.org).
-- [Bruno Carneiro](https://github.com/Tautorn) who translated the site to [Portuguese](https://tautorn.github.io/micro-frontends/).
-- [Soobin Bak](https://github.com/soobing) who translated the site to [Korean](https://soobing.github.io/micro-frontends/).
-- [Sergei Babin](https://github.com/serzn1) who translated the site to [Russian](https://serzn1.github.io/micro-frontends/).
-- [Shiwei Yang](https://github.com/swearer23) who translated the site to [Chinese](https://swearer23.github.io/micro-frontends/).
-- [Riccardo Moschetti](https://github.com/RiccardoGMoschetti) who translated the site to [Italian](https://riccardogmoschetti.github.io/micro-frontends/).
-- [Dominik Czechowski](https://github.com/dominikcz) who translated the site to [Polish](https://dominikcz.github.io/micro-frontends/).
-- [John Adib](https://github.com/johnadib) who translated the site to [Persian](https://johnadib.github.io/micro-frontends/).
+## Katkıda Bulunanlar
+- [Koike Takayuki](https://github.com/koiketakayuki) siteyi [Japonca](https://micro-frontends-japanese.org/)ya çevirdi.
+- [Jorge Beltrán](https://github.com/scipion) siteyi [İspanyolca](https://micro-frontends-es.org)'ya çevirdi.
+- [Bruno Carneiro](https://github.com/Tautorn) siteyi [Portekizce](https://tautorn.github.io/micro-frontends/)'ye çevirdi.
+- [Soobin Bak](https://github.com/soobing) siteyi [Korece](https://soobing.github.io/micro-frontends/)'ye çevirdi.
+- [Sergei Babin](https://github.com/serzn1) siteyi [Rusça](https://serzn1.github.io/micro-frontends/)'ya çevirdi.
+- [Shiwei Yang](https://github.com/swearer23) siteyi [Çince](https://swearer23.github.io/micro-frontends/)'ye çevirdi.
+- [Riccardo Moschetti](https://github.com/RiccardoGMoschetti) siteyi [İtalyanca](https://riccardogmoschetti.github.io/micro-frontends/)'ya çevirdi.
+- [Dominik Czechowski](https://github.com/dominikcz) siteyi [Lehçe](https://dominikcz.github.io/micro-frontends/)'ye çevirdi.
+- [John Adib](https://github.com/johnadib) siteyi [Farsça](https://johnadib.github.io/micro-frontends/)'ya çevirdi.
+- [Mehmet Mutlu](https://github.com/MhmtMutlu) siteyi [Türkçe](https://MhmtMutlu.github.io/micro-frontends/)'ye çevirdi.
 
 
-This site is generated by Github Pages. Its source can be found at [neuland/micro-frontends](https://github.com/neuland/micro-frontends/).
+Bu site Github Pages tarafından oluşturulmuştur. Kaynağına [neuland/micro-frontends](https://github.com/neuland/micro-frontends/) üzerinden ulaşabilirsiniz.
