@@ -1,4 +1,4 @@
-Birden fazla ekiple, özellikleri bağımsız olarak yayınlayabilen __modern bir web uygulaması__ oluşturmak için teknikler, stratejiler ve yöntemler.
+Birden fazla ekiple, özellikleri bağımsız olarak yayınlayabilen __modern bir web uygulaması geliştirmek__ için teknikler, stratejiler ve yöntemler.
 
 ## Mikro Frontend'ler nedir?
 
@@ -6,7 +6,7 @@ __Mikro Frontend__ terimi ilk olarak 2016'nın sonunda [ThoughtWorks Technology 
 
 Micro Frontends fikrinin arkasındaki temel düşünce, bir web sitesi veya web uygulamasını, __bağımsız ekiplerin__ sahip olduğu __özelliklerin bir bileşimi__ olarak görmektir. Her ekip, __kendi sorumlu olduğu iş alanına__ veya __hedefine__ odaklanır ve bu konuda uzmanlaşır. Bu ekipler __çapraz fonksiyonel__ (farklı rolleri barındıran ekip yapısı) yapıya sahiptir ve  __uçtan uca (end-to-end)__ çalışırlar; yani bir özelliği veritabanından kullanıcı arayüzüne kadar kendileri geliştirir.
 
-Ancak bu fikir aslında yeni değil. [Self-contained Systems](http://scs-architecture.org/) kavramıyla pek çok ortak noktası vardır. Geçmişte buna benzer yaklaşımlar [Dikeyleştirilmiş Sistemler için Frontend Entegrasyonu (Frontend Integration for Verticalised Systems)](https://www.otto.de/jobs/en/technology/techblog/blogpost/architecture-principles-2013-04-15.php) adıyla anılıyordu. Ancak Micro Frontends terimi, bu kavramı anlatmak için daha sade ve anlaşılır bir isimdir.
+Ancak bu fikir aslında yeni değil. [Kendine Yeten Sistemler (Self-contained Systems)](http://scs-architecture.org/) kavramıyla pek çok ortak noktası vardır. Geçmişte buna benzer yaklaşımlar [Dikeyleştirilmiş Sistemler için Frontend Entegrasyonu (Frontend Integration for Verticalised Systems)](https://www.otto.de/jobs/en/technology/techblog/blogpost/architecture-principles-2013-04-15.php) adıyla anılıyordu. Ancak Micro Frontends terimi, bu kavramı anlatmak için daha sade ve anlaşılır bir isimdir.
 
 __Monolitik Frontend'ler__
 <img alt="Monolithic Frontends" src="./ressources/diagrams/organisational/monolith-frontback-microservices.png" loading="lazy" />
@@ -19,19 +19,19 @@ __Dikey Organizasyon__
 
 Giriş kısmında “modern bir web uygulaması geliştirmek” ifadesini kullanmıştım. Şimdi bu ifadenin arkasındaki varsayımları netleştirelim.
 
-Daha geniş bir bakış açısından bakarsak, [Aral Balkan](https://ar.al/) [“Documents-to-Applications Continuum” (Dokümanlardan Uygulamalara Süreklilik)](https://ar.al/notes/the-documents-to-applications-continuum/) adını verdiği bir kavram hakkında bir blog yazısı yazmıştır. Bu kavramda, bir ucunda (__sol tarafta__) bağlantılarla birbirine bağlanmış __statik sayfalardan__ oluşan bir web sitesi, diğer ucunda ise (__sağ tarafta__) tamamen etkileşime dayalı, __içerikten ziyade__ davranış odaklı bir uygulama (örneğin bir online fotoğraf düzenleyici) bulunur.
+Daha geniş bir bakış açısından bakarsak, [Aral Balkan](https://ar.al/) [“Documents-to-Applications Continuum” (Dokümanlardan Uygulamalara Süreklilik)](https://ar.al/notes/the-documents-to-applications-continuum/) adını verdiği bir kavram hakkında blog yazısı yazmıştır. Bu kavramda, bir ucunda (__sol tarafta__) bağlantılarla birbirine bağlanmış __statik sayfalardan__ oluşan bir web sitesi, diğer ucunda ise (__sağ tarafta__) tamamen etkileşime dayalı, __içerikten ziyade__ davranış odaklı bir uygulama (örneğin bir online fotoğraf düzenleyici) bulunur.
 
-Eğer projeniz bu ölçeğin __sol tarafına__, yani “doküman ağırlıklı” tarafa yakınsa, __web sunucusu seviyesinde entegrasyon__ uygun bir yaklaşımdır. Bu modelde sunucu, kullanıcının talep ettiği sayfayı oluşturmak için farklı bileşenlerden gelen __HTML çıktısını birleştirir__. Güncellemeler sayfanın yeniden yüklenmesiyle veya AJAX istekleriyle belirli bölümlerin yenilenmesiyle yapılır. Bu konuda [Gustaf Nilsson Kotte](https://twitter.com/gustaf_nk/) oldukça [kapsamlı bir makale](https://gustafnk.github.io/microservice-websites/) yazmıştır.
+Eğer projeniz bu ölçeğin __sol tarafına__, yani “doküman ağırlıklı” tarafa yakınsa, __web sunucusu seviyesinde entegrasyon__ uygun bir yaklaşımdır. Bu modelde sunucu, kullanıcının talep ettiği sayfayı oluşturmak için farklı bileşenlerden gelen __HTML çıktılarını birleştirir__. Güncellemeler sayfanın yeniden yüklenmesiyle veya AJAX istekleriyle belirli bölümlerin yenilenmesiyle yapılır. Bu konuda [Gustaf Nilsson Kotte](https://twitter.com/gustaf_nk/) oldukça [kapsamlı bir makale](https://gustafnk.github.io/microservice-websites/) yazmıştır.
 
-Ancak kullanıcı arayüzünüzün __anında geri bildirim__ vermesi gerekiyorsa —özellikle bağlantının zayıf veya kesintili olduğu durumlarda— yalnızca sunucu tarafında render edilen bir site yeterli olmaz. [Optimistic UI](https://www.smashingmagazine.com/2016/11/true-lies-of-optimistic-user-interfaces/) veya [Skeleton Screens](http://www.lukew.com/ff/entry.asp?1797) gibi teknikleri uygulayabilmek için arayüzü doğrudan __cihaz üzerinde güncelleyebilmeniz__ gerekir. Google’ın  [“Progressive Web Apps” kavramı](https://developers.google.com/web/progressive-web-apps/), bu __dengeyi__ çok iyi özetler: Hem web’in temel ilkelerine sadık kalmak (progressive enhancement) hem de uygulama benzeri bir performans sunmak. Bu tür uygulamalar, __site-uygulama ölçeğinin ortalarına denk gelir__. Bu noktada yalnızca sunucu tabanlı çözümler yeterli olmaz — __entegrasyonu tarayıcıya taşımamız__ gerekir ve bu makalenin odak noktası da tam olarak budur.
+Ancak kullanıcı arayüzünüzün __anında geri bildirim__ vermesi gerekiyorsa —özellikle bağlantının zayıf veya kesintili olduğu durumlarda— yalnızca sunucu tarafında render edilen bir site yeterli olmaz. [İyimser Kullanıcı Arayüzü (Optimistic UI)](https://www.smashingmagazine.com/2016/11/true-lies-of-optimistic-user-interfaces/) veya [İskelet Ekranlar (Skeleton Screens)](http://www.lukew.com/ff/entry.asp?1797) gibi teknikleri uygulayabilmek için arayüzü doğrudan __cihaz üzerinde güncelleyebilmeniz__ gerekir. Google’ın  [“Progressive Web Apps” kavramı](https://developers.google.com/web/progressive-web-apps/), bu __dengeyi__ çok iyi özetler: Hem web’in temel ilkelerine sadık kalmak (progressive enhancement) hem de uygulama benzeri bir performans sunmak. Bu tür uygulamalar, __site-uygulama kavramının ortalarına konum alır__. Bu noktada yalnızca sunucu tabanlı çözümler yeterli olmaz — __entegrasyonu tarayıcıya taşımamız__ gerekir ve bu makalenin odak noktası da tam olarak budur.
 
 ## Mikro Frontend'lerin Arkasındaki Temel Fikirler
 
 * __Teknoloji Bakımından Bağımsız Olun__<br>Her ekip, diğer ekiplerle koordine olmak zorunda kalmadan kendi teknolojik yığınını seçebilmeli ve güncelleyebilmelidir. [Custom Elements](#the-dom-is-the-api), diğerlerine tarafsız bir arayüz sunarken uygulama detaylarını gizlemek için harika bir yöntemdir.
-* __Ekip Kodunu İzole Edin__<br>Tüm ekipler aynı framework'ü kullansa bile aynı çalışma zamanını paylaşmayın. Kendi içinde yeterli, bağımsız uygulamalar inşa edin. Paylaşılan duruma veya global değişkenlere güvenmeyin.
-* __Ekip Önekleri Belirleyin__<br>İzolasyonun henüz mümkün olmadığı yerlerde isimlendirme kuralları üzerinde anlaşın. Çakışmaları önlemek ve sahipliği netleştirmek için CSS, Event'ler, Local Storage ve Cookie'ler için isim alanları kullanın.
+* __Ekip Kodunu İzole Edin__<br>Tüm ekipler aynı framework'ü kullansa bile ortak bir çalışma zamanını (runtime) paylaşmayın. Bunun yerine kendi içinde yeterli, bağımsız uygulamalar inşa edin. Paylaşılan duruma (state'lere) veya global değişkenlere güvenmeyin.
+* __Ekip Önekleri Belirleyin__<br>İzolasyonun henüz mümkün olmadığı yerlerde isimlendirme kuralları üzerinde anlaşın. Çakışmaları önlemek ve sahipliği netleştirmek için CSS, Event'ler, Local Storage ve Cookie'ler için isim alanları (namespace) kullanın.
 * __Özel API'ler Yerine Yerel Tarayıcı Özelliklerini Tercih Edin__<br>Küresel bir PubSub sistemi kurmak yerine [iletişim için Tarayıcı Event'lerini](#parent-child-communication--dom-modification) kullanın. Ekipler arası bir API kurmanız gerçekten gerekiyorsa, mümkün olduğunca basit tutmaya çalışın.
-* __Dayanıklı Bir Site İnşa Edin__<br>JavaScript başarısız olsa ya da henüz çalışmamış olsa bile özelliğiniz faydalı olmalı. Algılanan performansı artırmak için [Evrensel Render](#server-side-rendering--universal-rendering) ve Kademeli İyileştirme'yi kullanın.
+* __Dayanıklı Bir Site İnşa Edin__<br>Özelliğiniz, JavaScript çalışmasa veya henüz yüklenmemiş olsa bile işe yarar olmalıdır. Kullanıcıya daha hızlı ve akıcı bir deneyim sunmak için  [Universal Rendering (evrensel render)](#server-side-rendering--universal-rendering) ve Progressive Enhancement (kademeli geliştirme) yaklaşımlarını kullanın. Bu sayede sayfa içeriği her durumda erişilebilir olur ve algılanan performans artar.
 
 ---
 
@@ -49,7 +49,7 @@ __Farklı framework'lerle__ yazılmış kodun __istemci__ ve __sunucu__ tarafın
 
 ### Temel Prototip
 
-Bu model traktör mağazasının ürün sayfası, aşağıdaki örnekler için temel alınacaktır.
+Bu "model traktör mağazasının ürün sayfası", aşağıdaki örnekler için temel olarak kullanılacaktır.
 
 Sayfada, üç farklı traktör modeli arasında geçiş yapmamızı sağlayan bir __model seçici (variant selector)__ bulunur. Model değiştirildiğinde, ürün resmi, adı, fiyatı ve önerilen ürünler buna göre güncellenir. Ayrıca bir __“Satın Al (Buy)” butonu__ vardır. Bu butona basıldığında seçilen model sepete eklenir. Sayfanın üst kısmındaki __mini sepet (mini basket)__ de buna göre güncellenir.
 
@@ -57,7 +57,7 @@ Sayfada, üç farklı traktör modeli arasında geçiş yapmamızı sağlayan bi
 
 [tarayıcıda dene](./0-model-store/) & [kodu incele](https://github.com/neuland/micro-frontends/tree/master/0-model-store)
 
-Tüm HTML, __yalnızca JavaScript kullanılarak (yani ek bir kütüphane olmadan)__ istemci tarafında oluşturuluyor. Kodda ES6’nın Template String yapısı kullanılmış ve __hiçbir bağımlılık (no dependencies)__ eklenmemiştir. Uygulama, durum (state) ve HTML yapısı (markup) arasında basit bir ayrım yapar. Herhangi bir değişiklik olduğunda, sayfadaki tüm HTML yeniden oluşturulur. Yani şu anda gelişmiş bir DOM fark hesaplama (DOM diffing) veya __sunucu tarafı render (universal rendering)__ kullanılmıyor. Ayrıca bu örnekte ekip ayrımı da yok [tüm kod](https://github.com/neuland/micro-frontends/tree/master/0-model-store) tek bir js ve css dosyasında yazılmış.
+Tüm HTML, __yalnızca JavaScript kullanılarak (yani ek bir kütüphane olmadan)__ istemci tarafında üretiliyor. Kodda ES6’nın Template String yapısı kullanılmış ve __hiçbir bağımlılık (no dependencies)__ eklenmemiş. Uygulama, durum (state) ve HTML yapısı (markup) arasında basit bir ayrım yaparak herhangi bir değişiklik olduğunda, sayfadaki tüm HTML yeniden oluşturur. Yani şu anda gelişmiş bir DOM fark kontrolü (DOM diffing) veya __evrensel render (universal rendering)__ kullanılmıyor. Ayrıca bu örnekte ekip ayrımı da olmadan [tüm kod](https://github.com/neuland/micro-frontends/tree/master/0-model-store) tek bir js ve css dosyasında yazılmış.
 
 ### İstemci Tarafı Entegrasyon
 

@@ -1,7 +1,7 @@
 theme: jekyll-theme-architect
 show_downloads: false
-title: Micro Frontends
-description: Microservice fikrinin frontend geliştirmeye uyarlanması
+title: Mikro Frontendler
+description: Mikro servis fikrinin frontend geliştirmeye uyarlanması
 github:
   is_project_page: true
   repository_url: https://github.com/neuland/micro-frontends
